@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32519.379
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaConsoleApp", "MediaConsoleApp\MediaConsoleApp.csproj", "{F7987B9E-A0B4-4A74-A0C8-535935DAEB7A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F7987B9E-A0B4-4A74-A0C8-535935DAEB7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7987B9E-A0B4-4A74-A0C8-535935DAEB7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7987B9E-A0B4-4A74-A0C8-535935DAEB7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7987B9E-A0B4-4A74-A0C8-535935DAEB7A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7A550966-3AB3-4170-9969-C036A1FA27FB}
+	EndGlobalSection
+EndGlobal
