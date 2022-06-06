@@ -16,10 +16,51 @@ async Task<List<Media>> LoadMedia()
     return apiResource?.MediaResources?.ToList() ?? new();
 }
 
-bool IsOver60Minutes(Media media)
+Song GetNextSong(Media media, int index)
+{
+    return media?.Songs[index] ?? null;
+}
+
+Media WriteSongToMedia(Media media, Song song)
+{
+    media.Songs.Add(song);
+    return media;
+}
+
+List<Media> FinalizeMedia(List<Media> writeToPhysicalMedias, List<Media> mediaLibrary)
+{
+    var physicalMedia = new Media();
+    physicalMedia.Title = "PhysicalMedia#1";
+    foreach (var media in mediaLibrary)
+    {
+        Console.WriteLine($"Writing all songs from {media.Title}...");
+        for (int x = 0; x < media.Songs.Count; x++)
+        {
+            var nextSong = GetNextSong(media, x);
+            if (nextSong != null)
+            {
+                if(!IsOver60Minutes(physicalMedia, nextSong))
+                {
+                    WriteSongToMedia(physicalMedia, nextSong);
+                }
+                else
+                {
+                    writeToPhysicalMedias.Add(physicalMedia);
+                    physicalMedia = new Media();
+                    physicalMedia.Title = $"PhysicalMedia#{writeToPhysicalMedias.Count + 1}";
+                    WriteSongToMedia(physicalMedia, nextSong);
+                }
+            }
+        }
+    }
+    writeToPhysicalMedias.Add(physicalMedia);
+    return writeToPhysicalMedias;
+}
+
+bool IsOver60Minutes(Media currentMedia, Song nextSong)
 {
     var isOver60 = false;
-    isOver60 = media?.Songs?.Sum(x => x.Duration) > 60;
+    isOver60 = (currentMedia?.Songs?.Sum(x => x.Duration) + nextSong.Duration) > 60;
     return isOver60;
 }
 
@@ -42,29 +83,28 @@ foreach(var media in mediaList)
 Console.WriteLine("Done loading from media library...");
 
 // CREATE PHYSICAL MEDIA
-Console.WriteLine("Creating Physical Media from Media Library...");
-var physicalMedia = new Media();
+Console.WriteLine("Writing to Physical Media from Media Library...");
+var physicalMedia = new List<Media>();
 
-foreach(var media in mediaList)
-{
-    Console.WriteLine($"Writing all songs from {media.Title}...");
-    foreach(var song in media.Songs)
-    {
-        if (!IsOver60Minutes(physicalMedia))
-        {
-            physicalMedia.Songs.Add(song);
-        }
-    }
-}
+FinalizeMedia(physicalMedia, mediaList);
 
 Console.WriteLine("Done creating physical media!");
 Console.WriteLine("Physical Media track list:");
-if(physicalMedia.Songs.Count > 0)
+if (physicalMedia.Count > 0)
 {
-    Console.WriteLine("Title - Artist");
-    foreach (var song in physicalMedia.Songs)
+    foreach (var media in physicalMedia)
     {
-        Console.WriteLine($"{song.Title} - {song.Artist}");
+        Console.WriteLine($"{media.Title}");
+        if (media.Songs.Count > 0)
+        {
+            Console.WriteLine("Title - Artist - Duration");
+            foreach (var song in media.Songs)
+            {
+                Console.WriteLine($"{song.Title} - {song.Artist} - {song.Duration}");
+            }
+        }
+        Console.WriteLine($"Total duration - {media.Songs.Sum(x => x.Duration)}");
+        Console.WriteLine("");
     }
 }
 
